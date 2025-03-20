@@ -1,48 +1,74 @@
 package com.example.restapi.services;
 
-import com.example.restapi.models.Task;
-import com.example.restapi.models.Status;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import com.example.restapi.models.Task;
+import com.example.restapi.repositories.TaskRepository;
+
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class TaskService {
-	private List<Task> tasks = new ArrayList<>();
-	private Long nextId = 1L;
+    @Autowired
+    private TaskRepository taskRepository;
 
-	public Task createTask(Task task) {
-		task.setId(nextId++);
-        if (task.getStatus() == null) {
-			task.setStatus(Status.PENDING);
-		}
-		tasks.add(task);
-		return task;
-	}
+    // Criar uma task
+    public Task saveTask(Task task) {
+        try {
+            return taskRepository.save(task);
+        } catch (Exception e) {
+            System.err.println("Erro ao salvar a task: " + e.getMessage());
+            throw new RuntimeException("Erro ao salvar a tarefa", e);
+        }
+    }
 
-	public List<Task> getAllTasks() {
-		return tasks;
-	}
+    // Atualizar task
+    public Task updateTask(Long id, Task task) {
+        try {
+            return taskRepository.findById(id)
+                .map(existingTask -> {
+                    existingTask.setTitle(task.getTitle());
+                    existingTask.setDescription(task.getDescription());
+                    existingTask.setStatus(task.getStatus());
+                    return taskRepository.save(existingTask);
+                })
+                .orElseThrow(() -> new RuntimeException("Task não encontrada com ID: " + id));
+        } catch (Exception e) {
+            System.err.println("Erro ao atualizar tarefa: " + e.getMessage());
+            throw new RuntimeException("Erro ao atualizar a tarefa", e);
+        }
+    }
 
-	public Optional<Task> getTaskById(Long id) {
-		return tasks.stream().filter(task -> task.getId().equals(id)).findFirst();
-	}
+    // Obter todas as tasks
+    public List<Task> getAllTasks() {
+        try {
+            return taskRepository.findAll();
+        }catch (Exception e) {
+            System.err.println("Erro ao buscas informações no banco: " + e.getMessage());
+            throw new RuntimeException("Erro ao buscar tarefas", e);
+        }
+    }
 
-	public Optional<Task> updateTask(Long id, Task updatedTask) {
-		Optional<Task> existingTask = getTaskById(id);
-		if (existingTask.isPresent()) {
-			Task task = existingTask.get();
-			task.setTitle(updatedTask.getTitle());
-			task.setDescription(updatedTask.getDescription());
-			task.setStatus(updatedTask.getStatus());
-			return Optional.of(task);
-		}
-		return Optional.empty();
-	}
+    // Obter uma task por id
+    public Optional<Task> getTaskById(Long id) {
+        try {
+            return taskRepository.findById(id);
+        } catch (Exception e) {
+            System.err.println("Erro ao buscar a task com ID " + id + ": " + e.getMessage());
+            return Optional.empty(); 
+        }
+    }
 
-	public boolean deleteTask(Long id) {
-		return getTaskById(id).map(tasks::remove).orElse(false);
-	}
+    // Deletar uma task por id
+    public void deleteTask(Long id) {
+        try {
+            taskRepository.deleteById(id);
+        }
+        catch(Exception e) {
+            System.err.println("Erro ao deletar a tarefa (" + id + "): " + e.getMessage());
+            throw new RuntimeException("Erro ao salvar a task", e);
+        }
+    }
 }
