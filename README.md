@@ -12,10 +12,9 @@ Esta API RESTful foi desenvolvida para facilitar o gerenciamento de tarefas, per
 - **Spring Data JPA** (Facilita a interação com o banco de dados)
 - **Hibernate** (ORM para mapeamento objeto-relacional)
 - **PostgreSQL** (Banco de dados utilizado em produção)
-- **H2 Database** (Banco de dados em memória para testes locais)
 - **Lombok** (Redução de código repetitivo)
 - **Docker** (Para a conexão entre o banco de dados PostgreSQL e a aplicação)
-- **JUnit + Mockito** (Testes automatizados)
+- **JUnit + Mockito** (Testes automatizados) | A Fazer
 - **Swagger** (Documentação interativa da API)
 
 ## ⚙️ Funcionalidades
@@ -40,25 +39,27 @@ Esta API RESTful foi desenvolvida para facilitar o gerenciamento de tarefas, per
 Antes de rodar o projeto, certifique-se de ter instalado:
 - **JDK 17+**
 - **Maven**
-- **Docker** (Opcional, caso queira rodar o PostgreSQL via container)
+- **Docker** (Para rodar o PostgreSQL via container)
 
 ### 🔧 Configuração do Banco de Dados
 
 #### 🔹 Rodando com PostgreSQL localmente
-1. Instale o PostgreSQL e crie um banco chamado `tasks_db`
-2. Configure as credenciais no `application.properties`
+1. Configure as credenciais no `application.properties`
 
 ```
-spring.datasource.url=jdbc:postgresql://localhost:5432/tasks_db
+spring.datasource.url=jdbc:postgresql://localhost:5432/taskmanager
 spring.datasource.username=seu_usuario
 spring.datasource.password=sua_senha
+spring.datasource.driver-class-name=org.postgresql.Driver
+spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
 spring.jpa.hibernate.ddl-auto=update
+spring.datasource.hikari.pool-name=HikariCP
 ```
 
-#### 🔹 Rodando PostgreSQL via Docker (Opcional)
-Se não quiser instalar o PostgreSQL, execute este comando para criar um container:
+#### 🔹 Rodando PostgreSQL via Docker
+Execute este comando para criar um container:
 ```
-docker run --name tasks-db -e POSTGRES_DB=tasks_db -e POSTGRES_USER=admin -e POSTGRES_PASSWORD=admin -p 5432:5432 -d postgres
+docker run --name tasks-db -e POSTGRES_DB=taskmanager -e POSTGRES_USER=seu_usuario -e POSTGRES_PASSWORD=sua_senha -p 5432:5432 -d postgres
 ```
 
 ### ▶️ Executando a API
@@ -75,28 +76,29 @@ docker run --name tasks-db -e POSTGRES_DB=tasks_db -e POSTGRES_USER=admin -e POS
    mvn spring-boot:run
    ```
 
-A API estará disponível em `http://localhost:8080`
+A API estará disponível em `http://localhost:8081`
 
 ## 📖 Documentação da API
 
 Após rodar o projeto, acesse a documentação no Swagger:
-- `http://localhost:8080/swagger-ui.html`
+- `http://localhost:8081/swagger-ui/index.html`
 
 ## 🔥 Endpoints Principais
 
 ### 🔹 Autenticação
-| Método | Endpoint        | Descrição            |
-|--------|---------------|----------------------|
-| POST   | `/auth/signup` | Criar conta         |
-| POST   | `/auth/login`  | Autenticar usuário  |
+| Método | Endpoint         | Descrição           |
+|--------|------------------|---------------------|
+| POST   | `/auth/register` | Criar conta         |
+| POST   | `/auth/login`    | Autenticar usuário  |
 
 ### 🔹 Tarefas
-| Método | Endpoint        | Descrição                |
-|--------|---------------|--------------------------|
-| GET    | `/tasks`       | Listar todas as tarefas  |
-| POST   | `/tasks`       | Criar uma nova tarefa    |
-| PUT    | `/tasks/{id}`  | Atualizar uma tarefa     |
-| DELETE | `/tasks/{id}`  | Remover uma tarefa       |
+| Método | Endpoint       | Descrição                     |
+|--------|----------------|-------------------------------|
+| GET    | `/tasks`       | Listar todas as tarefas       |
+| GET    | `/tasks/{id}`  | Listar uma tarefa específica  |
+| POST   | `/tasks`       | Criar uma nova tarefa         |
+| PUT    | `/tasks/{id}`  | Atualizar uma tarefa          |
+| DELETE | `/tasks/{id}`  | Remover uma tarefa            |
 
 ## 📜 Licença
 
