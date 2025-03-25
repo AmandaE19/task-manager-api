@@ -44,16 +44,27 @@ Antes de rodar o projeto, certifique-se de ter instalado:
 ### 🔧 Configuração do Banco de Dados
 
 #### 🔹 Rodando com PostgreSQL localmente
-1. Configure as credenciais no `application.properties`
+1. Configure as credenciais loalmente, via terminal, para que o arquivo `application.properties` possa ser configurado corretamente:
 
+- Opção 1: Linux/macOS
 ```
-spring.datasource.url=jdbc:postgresql://localhost:5432/taskmanager
-spring.datasource.username=seu_usuario
-spring.datasource.password=sua_senha
-spring.datasource.driver-class-name=org.postgresql.Driver
-spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
-spring.jpa.hibernate.ddl-auto=update
-spring.datasource.hikari.pool-name=HikariCP
+export DB_USERNAME=seu_usuario
+export DB_PASSWORD=sua_senha
+export JWT_SECRET="sua_chave_super_secreta"
+```
+
+- Opção 2: Windows (cmd):
+```
+set DB_USERNAME=seu_usuario
+set DB_PASSWORD=sua_senha
+set JWT_SECRET=sua_chave_super_secreta
+```
+
+- Opção 3: PowerShell:
+```
+$env:DB_USERNAME="seu_usuario"
+$env:DB_PASSWORD="sua_senha"
+$env:JWT_SECRET="sua_chave_secreta"
 ```
 
 #### 🔹 Rodando PostgreSQL via Docker
