@@ -1,30 +1,24 @@
 package com.example.restapi.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Column;
-
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-
+@Entity
+@Table(name = "tasks")
 @Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(nullable = false)
     private String title;
 
-    @Column(length = 500)
+    @Column(length = 500, nullable = false)
     private String description;
 
     @Enumerated(EnumType.STRING)

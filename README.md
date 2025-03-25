@@ -2,7 +2,7 @@
 
 ## 📖 Sobre o Projeto
 
-Esta API RESTful foi desenvolvida para facilitar o gerenciamento de tarefas, permitindo que os usuários realizem operações CRUD (Create, Read, Update, Delete) em suas tarefas, com autenticação segura via JWT.
+Esta API RESTful foi desenvolvida para facilitar o gerenciamento de tarefas, permitindo que os usuários realizem operações CRUD (Create, Read, Update, Delete) em tarefas, com autenticação segura via JWT.
 
 ## 🚀 Tecnologias Utilizadas
 
@@ -14,7 +14,7 @@ Esta API RESTful foi desenvolvida para facilitar o gerenciamento de tarefas, per
 - **PostgreSQL** (Banco de dados utilizado em produção)
 - **H2 Database** (Banco de dados em memória para testes locais)
 - **Lombok** (Redução de código repetitivo)
-- **Docker (Opcional)** (Para facilitar a execução da aplicação)
+- **Docker** (Para a conexão entre o banco de dados PostgreSQL e a aplicação)
 - **JUnit + Mockito** (Testes automatizados)
 - **Swagger** (Documentação interativa da API)
 
@@ -28,7 +28,6 @@ Esta API RESTful foi desenvolvida para facilitar o gerenciamento de tarefas, per
 ✅ **Gerenciamento de Tarefas**
 - Criar, editar, excluir e listar tarefas
 - Filtragem de tarefas por status (**pendente, concluída, em andamento**)
-- Cada usuário gerencia apenas suas próprias tarefas
 
 ✅ **Extras**
 - Paginação e ordenação de tarefas
